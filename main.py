@@ -11,7 +11,7 @@ def parse_args():
 def read_csv(path):
     transactions = []
 
-    with open(path, 'r', errors='ignore', encoding='utf-16') as file:
+    with open(path, 'r', encoding='utf-16') as file:
         reader = csv.DictReader(file)
         for row in reader:
             transactions.append(row)
