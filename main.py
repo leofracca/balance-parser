@@ -20,6 +20,7 @@ def read_csv(path):
 
 
 def calculate_expense_for_category(transactions):
+    """Calculate total revenues and expenses for each category."""
     revenues, expenses = {}, {}
 
     for transaction in transactions:
@@ -37,16 +38,44 @@ def calculate_expense_for_category(transactions):
     return revenues, expenses
 
 
+def print_totals(revenues, expenses):
+    for category, amount in revenues.items():
+        print(f"{category}: {amount:.2f}")
+    print()
+    for category, amount in expenses.items():
+        print(f"{category}: {amount:.2f}")
+
+
+def fix_names(revenues, expenses):
+    categories_to_change = []
+
+    # Add category_in to revenues if category is in expenses
+    for category in expenses:
+        if category in revenues:
+            revenues[f"{category}_in"] = revenues.pop(category)
+            categories_to_change.append(category)
+
+    # Add category_out to expenses if category is in revenues
+    for category in categories_to_change:
+        expenses[f"{category}_out"] = expenses.pop(category)
+
+
+def create_report(revenues, expenses):
+    for category, amount in sorted(revenues.items(), key=lambda x: x[1], reverse=True):
+        print(f"{category} [{amount:.2f}] Revenues")
+
+    print()
+    for category, amount in sorted(expenses.items(), key=lambda x: x[1], reverse=True):
+        print(f"Revenues [{amount:.2f}] {category}")
+
+
 def main():
     args = parse_args()
     transactions = read_csv(args.input)
     revenues, expenses = calculate_expense_for_category(transactions)
-
-    for category, amount in revenues.items():
-        print(f"{category}: {amount}")
-    print()
-    for category, amount in expenses.items():
-        print(f"{category}: {amount}")
+    # print_totals(revenues, expenses)
+    fix_names(revenues, expenses)
+    create_report(revenues, expenses)
 
 
 if __name__ == "__main__":
