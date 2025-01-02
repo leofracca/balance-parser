@@ -61,12 +61,18 @@ def fix_names(revenues, expenses):
 
 
 def create_report(revenues, expenses):
+    # Print revenues
     for category, amount in sorted(revenues.items(), key=lambda x: x[1], reverse=True):
         print(f"{category} [{amount:.2f}] Revenues")
 
     print()
+    # Print expenses
     for category, amount in sorted(expenses.items(), key=lambda x: x[1], reverse=True):
         print(f"Revenues [{amount:.2f}] {category}")
+
+    # Calculate and print savings
+    savings = sum(revenues.values()) - sum(expenses.values())
+    print(f"Revenues [{savings:.2f}] Savings")
 
 
 def main():
