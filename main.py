@@ -19,7 +19,7 @@ def read_csv(path):
     return transactions
 
 
-def calculate_expense_for_category(transactions):
+def calculate_revenue_and_expense_for_category(transactions):
     """Calculate total revenues and expenses for each category."""
     revenues, expenses = {}, {}
 
@@ -70,15 +70,16 @@ def create_report(revenues, expenses):
     for category, amount in sorted(expenses.items(), key=lambda x: x[1], reverse=True):
         print(f"Revenues [{amount:.2f}] {category}")
 
-    # Calculate and print savings
+    # Calculate savings
     savings = sum(revenues.values()) - sum(expenses.values())
-    print(f"Revenues [{savings:.2f}] Savings")
+    if savings > 0:
+        print(f"Revenues [{savings:.2f}] Savings")
 
 
 def main():
     args = parse_args()
     transactions = read_csv(args.input)
-    revenues, expenses = calculate_expense_for_category(transactions)
+    revenues, expenses = calculate_revenue_and_expense_for_category(transactions)
     # print_totals(revenues, expenses)
     fix_names(revenues, expenses)
     create_report(revenues, expenses)
